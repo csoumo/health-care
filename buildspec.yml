@@ -40,7 +40,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 12
+      nodejs: 21.6.1
   pre_build:
     commands:
       - echo Installing NPM dependencies
