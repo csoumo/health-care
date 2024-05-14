@@ -1,23 +1,57 @@
+#      version: 0.2
+#      phases:
+#        pre_build:
+#          commands:
+#            - echo Logging into Amazon ECR started on `date`
+#            - aws --version
+#            - echo installing dependencies
+#            - echo Logging into Amazon ECR....
+#            - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 101919673100.dkr.ecr.us-east-2.amazonaws.com
+#            - echo setting repository URI....
+#            - REPOSITORY_URI=101919673100.dkr.ecr.us-east-2.amazonaws.com/react-ui
+#            - echo setting image tag....
+#            - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+#        build:
+#          commands:
+#            - echo building and tagging started image on `date`
+#            - echo running npm run build
+#            - echo building the Docker image...
+#            - docker build -t $REPOSITORY_URI:latest .
+#            - echo tagging the Docker image...
+#            - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+#        post_build:
+#          commands:
+#            - echo pushing Docker image to Amazon ECR started on `date`
+#            - echo pushing to repository...
+#            - docker push $REPOSITORY_URI:latest
+#            - docker push $REPOSITORY_URI:$IMAGE_TAG
+#            - echo setting container name...
+#            - DOCKER_CONTAINER_NAME=reactcontainer
+#            - echo writing image definitions file...
+#            - printf '[{"name":"%s", "imageUri":"%s"}]' DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+#            - echo $DOCKER_CONTAINER_NAME
+#            - echo printing imagedefinitions.json
+#            - cat imagedefinitions.json
+#      artifacts:
+#        files:
+#          - imagedinitions.json
+
+version: 0.2
 phases:
   install:
     runtime-versions:
       nodejs: 12
-
+  pre_build:
     commands:
-      # install npm
+      - echo Installing NPM dependencies
       - npm install
-
   build:
     commands:
-      # run build script
-      - npm run-script build
-
+      - echo Build started on `date`
+      - npm run build
+  post_build:
+    commands:
 artifacts:
-  # include all files required to run application
-  # notably excluded is node_modules, as this will cause overwrite error on deploy
   files:
-    - public/**/*
-    - src/**/*
-    - package.json
-    - appspec.yml
-    - scripts/**/*
+    - '**/*'
+  base-directory: build
