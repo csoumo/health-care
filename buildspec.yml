@@ -1,9 +1,16 @@
       version: 0.2
       phases:
+        install:
+          commands:
+            - npm install
+      build:
+        commands:
+          - npm run-script build
         pre_build:
           commands:
             - echo Logging into Amazon ECR started on `date`
             - aws --version
+            - echo installing dependencies
             - echo Logging into Amazon ECR....
             - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 101919673100.dkr.ecr.us-east-2.amazonaws.com
             - echo setting repository URI....
@@ -33,4 +40,9 @@
             - cat imagedefinitions.json
       artifacts:
         files:
+          - public/**/*
+          - src/**/*
+          - package.json
+          - appspec.yml
+          - scripts/**/*
           - imagedinitions.json
