@@ -6,8 +6,8 @@ ENV NODE_ENV development
 WORKDIR /health-care
 # Installing dependencies
 COPY ./package*.json /health-care
-RUN yarn run build
+RUN yarn install
 # Copying all the files in our project
 COPY . .
 # Starting our application
-CMD ["yarn","start"]
+CMD ["yarn", "dev", "--host", "0.0.0.0"]
