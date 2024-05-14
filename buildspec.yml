@@ -40,9 +40,9 @@ version: 0.2
 phases:
   build:
     commands:
-      - yarn
-      - yarn add --dev jest-junit @babel/plugin-proposal-private-property-in-object
-      - yarn run build
+      - npm
+      - npm add --dev jest-junit @babel/plugin-proposal-private-property-in-object
+      - npm run build
 artifacts:
   name: "build-output"
   files:
